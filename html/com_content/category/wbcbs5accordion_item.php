@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Administrator\Extension\ContentComponent;
@@ -42,9 +43,9 @@ $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED 
 
     <?php echo LayoutHelper::render('joomla.content.blog_style_default_item_title', $this->item); ?>
 
-    <?php if ($canEdit) : ?>
-        <?php echo LayoutHelper::render('joomla.content.icons', ['params' => $params, 'item' => $this->item]); ?>
-    <?php endif; ?>
+    <?php // if ($canEdit) :   Editfunktion deaktiviert ?>
+        <?php // echo LayoutHelper::render('joomla.content.icons', ['params' => $params, 'item' => $this->item]); ?>
+    <?php  //endif; ?>
 
     <?php // @todo Not that elegant would be nice to group the params ?>
     <?php $useDefList = ($params->get('show_modify_date') || $params->get('show_publish_date') || $params->get('show_create_date')
@@ -71,7 +72,7 @@ $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED 
     <?php $Data = array(); ?>
     <?php $Data['itemid']        = $this->item->id;?>
     <?php $Data['customfields']  = FieldsHelper::getFields('com_content.article', $this->item); ?>
-    <?php $wbclayoutCustomfields = new JLayoutFile('joomla.content.wbccustomfields', $basePath = null); ?>
+    <?php $wbclayoutCustomfields = new FileLayout('joomla.content.wbccustomfields', $basePath = null); ?>
     <?php echo $wbclayoutCustomfields->render($Data); ?>   
                        
     <?php if ($info == 1 || $info == 2) : ?>

@@ -21,7 +21,8 @@ use \Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 
 $app          = Factory::getApplication();
 $doc          = $app->getDocument();
-$mediapath    = 'media/templates/site/wbc_blanco_j4/';
+$template     = $app->getTemplate(true);
+$mediapath    = 'media/templates/site/'. $template->template .'/';
 
 
 /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
@@ -48,40 +49,52 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 <div class="wbc__com-content-wbcaccordion" itemscope itemtype="https://schema.org/Blog">
     <?php if ($this->params->get('show_page_heading')) : ?>
         <div class="page-header">
-            <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+            <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
         </div>
     <?php endif; ?>
-
-    <?php if ($this->params->get('show_category_title', 1)) : ?>
-    <<?php echo $htag; ?>>
-        <?php echo $this->category->title; ?>
-    </<?php echo $htag; ?>>
-    <?php endif; ?>
-    <?php echo $afterDisplayTitle; ?>
-
-    <?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
-        <?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
-        <?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
-    <?php endif; ?>
-
-    <?php if ($beforeDisplayContent || $afterDisplayContent || $this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
+  
+    <?php if ($beforeDisplayContent || $afterDisplayContent || $this->params->get('show_description', 1) || $this->params->def('show_description_image', 1) || $this->params->get('show_category_title', 1)) : ?>
         <div class="wbc__category-desc-container d-flex align-items-center mb-4">
+          
             <?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
+                <picture class="p-3">
                 <?php echo LayoutHelper::render(
                     'joomla.html.image',
                     [
                         'src' => $this->category->getParams()->get('image'),
                         'alt' => empty($this->category->getParams()->get('image_alt')) && empty($this->category->getParams()->get('image_alt_empty')) ? false : $this->category->getParams()->get('image_alt'),
+                        'class' => 'wbc__categoryimg',
                     ]
                 ); ?>
+                </picture>
             <?php endif; ?>
-            <div class="wbc__category-desc">
-            <?php echo $beforeDisplayContent; ?>
-            <?php if ($this->params->get('show_description') && $this->category->description) : ?>
-                <?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
-            <?php endif; ?>
-            <?php echo $afterDisplayContent; ?>
+
+            <?php if ($this->params->get('show_category_title', 1) || ($this->params->get('show_description') && $this->category->description)) : ?>
+            <div class="flex-grow-1 ms-3">
+                <?php if ($this->params->get('show_category_title', 1)) : ?>
+                    <div class="wbc__category-title">
+                    <<?php echo $htag; ?>>
+                            <?php echo $this->category->title; ?> 
+                    <<?php echo $htag; ?>>
+                </div>
+                <?php endif; ?>
+                <?php echo $afterDisplayTitle; ?>
+
+                <div class="wbc__category-desc">
+                    <?php echo $beforeDisplayContent; ?>
+                    <?php if ($this->params->get('show_description') && $this->category->description) : ?>
+                        <?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
+                    <?php endif; ?>
+                    <?php echo $afterDisplayContent; ?>
+                </div>
             </div>
+            <?php endif;?>    
+
+            <?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
+                <?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
+                <?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
+            <?php endif; ?>
+
         </div>
     <?php endif; ?>
 
@@ -151,7 +164,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
             <?php foreach ($categorys as $category ) : ?>
                 <?php $count_items++; ?>
                         
-                <div class="wbc__com-content-category-accordion__item accordion-item"
+                <div class="wbc__com-content-category-accordion__item wbc__accordion-items accordion-item"
                     itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
                         <?php /* Accordion Button */ ?>
                         <?php if ( $category['catid'] != $cid ) { ?>
@@ -169,7 +182,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
                             <?php foreach ( $category['items'] as $wbcitem ) : ?>  
                                 <?php $this->item = $wbcitem; ?>
                                 
-                                <?php echo $this->loadTemplate('accitem');?>
+                                <?php echo $this->loadTemplate('accitem'); /* Unterkategorien */ ?>
                         
                             <?php endforeach ?>
                         </div>
@@ -187,7 +200,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
     <?php endif; ?>
 
     <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
-        <div class="wbc__com-content-category-blog__children cat-children mt-5 row row-cols-2 row-cols-md-3 row-cols-lg-<?php echo $this->params->get('num_columns');?> g-4">
+        <div class="wbc__com-content-category-blog__children cat-children mt-5 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-<?php echo $this->params->get('num_columns');?> g-4">
             <?php  echo $this->loadTemplate('children'); ?>
         </div>   
     <?php endif; ?>

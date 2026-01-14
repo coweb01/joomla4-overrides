@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Administrator\Extension\ContentComponent;
@@ -39,7 +40,7 @@ $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED 
 
 
 /* Für die Ausgabe der  Customfields */ ?>
-<?php $wbclayoutCustomfields = new JLayoutFile('joomla.content.wbccustomfields', $basePath = null);?>
+<?php $wbclayoutCustomfields = new FileLayout('joomla.content.wbccustomfields', $basePath = null);?>
                     
 <?php echo LayoutHelper::render('joomla.content.intro_image', $this->item); ?>
 
@@ -47,10 +48,10 @@ $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED 
     <?php if ($isUnpublished) : ?>
         <div class="system-unpublished">
     <?php endif; ?>
-
-    <?php if ($canEdit) : ?>
-        <?php echo LayoutHelper::render('joomla.content.icons', ['params' => $params, 'item' => $this->item]); ?>
-    <?php endif; ?>
+    
+    <?php //if ($canEdit) :   Editfunktion deaktiviert  ?>
+        <?php //echo LayoutHelper::render('joomla.content.icons', ['params' => $params, 'item' => $this->item]); ?>
+    <?php //endif; ?>
 
     <?php // @todo Not that elegant would be nice to group the params ?>
     <?php $useDefList = ($params->get('show_modify_date') || $params->get('show_publish_date') || $params->get('show_create_date')
@@ -72,9 +73,13 @@ $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED 
     <?php echo $this->item->event->beforeDisplayContent; ?>
     <?php if ( $link_titles ) { ?>
             
-                <a class="wbc__itemlink" href="<?php echo Route::_(RouteHelper::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language)); ?>">
-                    <h4> <?php echo $this->escape($this->item->title); ?></h4>
-                </a>
+        <a class="wbc__itemlink" href="<?php echo Route::_(RouteHelper::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language)); ?>">
+            <p class="d-flex justify-content-between h4"><span><?php echo $this->escape($this->item->title); ?></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            </p>
+        </a>
             
     <?php  } else { ?>
         <?php echo $this->item->introtext; ?>
@@ -83,7 +88,7 @@ $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED 
         <?php $Data = array(); ?>
         <?php $Data['itemid']        = $this->item->id;?>
         <?php $Data['customfields']  = FieldsHelper::getFields('com_content.article', $this->item); ?>
-        <?php $wbclayoutCustomfields = new JLayoutFile('joomla.content.wbccustomfields', $basePath = null); ?>
+        <?php $wbclayoutCustomfields = new FileLayout('joomla.content.wbccustomfields', $basePath = null); ?>
         <?php echo $wbclayoutCustomfields->render($Data); ?>
    
         <?php if ($info == 1 || $info == 2) : ?>

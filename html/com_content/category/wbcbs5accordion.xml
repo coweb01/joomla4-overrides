@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<layout title="COM_CONTENT_CATEGORY_VIEW_ACCORDION_TITLE" option="COM_CONTENT_CATEGORY_VIEW_ACCORDION_OPTION">
+	<layout title="WBCDG_CATEGORY_VIEW_ACCORDION_TITLE" option="WBCDG_CATEGORY_VIEW_ACCORDION_OPTION">
 		<help key = "Menu_Item:_Category_Blog" />
 		<message>
-			<![CDATA[COM_CONTENT_CATEGORY_VIEW_ACCORDION_DESC]]>
+			<![CDATA[WBCDG_CATEGORY_VIEW_ACCORDION_DESC]]>
 		</message>
 	</layout>
 

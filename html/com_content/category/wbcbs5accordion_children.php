@@ -37,7 +37,7 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?
                 <a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>" class="wbc__card-link">     
 
                     <div class="wbc__com-content-category-blog__child card "> 
-                        <div class="card-body"> 
+                        <div class="wbc__card-body card-body"> 
                                 <?php if ( $child->getParams()->get('image')) : ?>
                                     <div class="wbc__bg-secondary wbc__border_icon wbc__card_icon wbc__grow">
                                     <?php echo $HtmlImage; ?>
@@ -45,7 +45,7 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?
                                 <?php endif; ?>
 
                                 <?php if ($lang->isRtl()) : ?>
-                                <h3 class="card-title text-center mt-3 h4">
+                                <h3 class="wbc__card-title card-title text-center text-break mt-3 h4">
                                     <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
                                         <span class="badge bg-info tip">
                                             <?php echo $child->getNumItems(true); ?>
@@ -54,7 +54,7 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?
                                     <?php echo $this->escape($child->title); ?>
                                 </h3>
                                 <?php else : ?>
-                                <h3 class="card-title text-center mt-3 h4">
+                                <h3 class="wbc__card-title card-title text-center mt-3 h4">
                                     <?php echo $this->escape($child->title); ?></a>
                                     <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
                                         <span class="badge bg-info">
@@ -67,7 +67,7 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?
                                 
                                 <?php if ($this->params->get('show_subcat_desc') == 1) : ?>
                                     <?php if ($child->description) : ?>
-                                    <div class="com-content-category-blog__description category-desc card-text text-center">
+                                    <div class="com-content-category-blog__description category-desc wbc__card-text card-text text-center">
                                         <?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_content.category'); ?>
                                     </div>
                                     <?php endif; ?>

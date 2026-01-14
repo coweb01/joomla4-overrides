@@ -41,8 +41,8 @@ $isExpired         = !is_null($this->item->publish_down) && $this->item->publish
 $Data = array();
 $Data['customfields']  = FieldsHelper::getFields('com_content.article', $this->item); 
 $Data['itemid']        = $this->item->id;
-$wbclayoutCustomfields = new JLayoutFile('joomla.content.wbccustomfields', $basePath = null); 
-$wbcCustomfields  = $wbclayoutCustomfields->render($Data); 
+$wbclayoutCustomfields = new FileLayout('joomla.content.wbccustomfields', $basePath = null); 
+$wbcCustomfields       = $wbclayoutCustomfields->render($Data); 
 // end override
 ?>
 <div class="com-content-article item-page<?php echo $this->pageclass_sfx; ?>" itemscope itemtype="https://schema.org/Article">
